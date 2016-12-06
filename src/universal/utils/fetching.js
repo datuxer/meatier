@@ -62,7 +62,12 @@ export const fetchGraphQL = async graphParams => {
     },
     body: serializedParams
   });
-  const resJSON = await res.json();
+  // try {
+    const resJSON = await res.json();
+  // }
+  // catch (err) {
+  //   return {data: {}, error: res};
+  // }
   const {data, errors} = resJSON;
   return {data, error: getClientError(errors)};
 };

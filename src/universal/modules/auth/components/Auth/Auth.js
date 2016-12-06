@@ -7,6 +7,7 @@ import {loginUser, signupUser, oauthLogin} from '../../ducks/auth';
 
 export default class Auth extends Component {
   static propTypes = {
+    // fields: PropTypes.arrayOf(PropTypes.string).isRequired,
     fields: PropTypes.object.isRequired,
     error: PropTypes.any,
     handleSubmit: PropTypes.func,
