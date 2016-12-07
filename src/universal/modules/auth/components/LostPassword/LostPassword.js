@@ -5,11 +5,22 @@ import styles from './LostPassword.css';
 import meatierForm from 'universal/decorators/meatierForm/meatierForm'
 import {emailPasswordReset} from '../../ducks/auth';
 import {authSchemaEmail} from '../../schemas/auth';
+import { Field } from 'redux-form'
 
-@meatierForm({form: 'lostPasswordForm', fields: ['email'], schema: authSchemaEmail})
+const renderInput = field =>   // Define stateless component to render input and errors
+  <TextField
+    type={field.type}
+    name={field.name}
+    floatingLabelText={field.floatingLabelText}
+    hintText={field.hintText}
+    defaultValue={field.defaultValue}
+    autoFocus
+    errorText={field.meta.touched && field.meta.error || ''}
+  />
+
+@meatierForm({form: 'lostPasswordForm', schema: authSchemaEmail})
 export default class LostPassword extends Component {
   static propTypes = {
-    fields: PropTypes.object,
     error: PropTypes.any,
     handleSubmit: PropTypes.func,
     submitting: PropTypes.bool,
@@ -23,7 +34,7 @@ export default class LostPassword extends Component {
     })
   }
   render() {
-    const {fields: {email}, error, handleSubmit, submitting, location} = this.props;
+    const {error, handleSubmit, submitting, location} = this.props;
     return (
       <div className={styles.lostPasswordForm}>
         <h3>Lost password</h3>
@@ -32,15 +43,14 @@ export default class LostPassword extends Component {
         <form className={styles.lostPasswordForm} onSubmit={handleSubmit(emailPasswordReset)}>
           <input style={{display: 'none'}} type="text" name="javascript-disabled"/>
 
-          <TextField
-            {...email}
-            type="text"
-            hintText="name@email.com"
-            errorText={email.touched && email.error || ''}
+          <Field
+            name="mail"                   // Specify field name
             floatingLabelText="Email"
+            hintText="name@email.com"
             defaultValue={location.query.e}
-            autoFocus
-          />
+            component={renderInput}           // Specify render component above
+            type="text"/>
+
           <input style={{display: 'none'}} type="text" name="javascript-disabled"/>
           <div className={styles.lostPasswordButton}>
             <RaisedButton

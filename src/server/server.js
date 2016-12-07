@@ -11,6 +11,7 @@ getDotenv();
 export const options = {
   authKey: process.env.JWT_SECRET,
   logLevel: 1,
+  inspectWorkers: true,
   // change this to scale vertically
   workers: 1 || numCpus,
   brokers: 1,

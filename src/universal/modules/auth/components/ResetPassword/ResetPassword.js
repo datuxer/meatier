@@ -6,6 +6,15 @@ import meatierForm from 'universal/decorators/meatierForm/meatierForm'
 import {authSchemaPassword} from '../../schemas/auth';
 import {resetPassword} from '../../ducks/auth';
 
+const renderInput = field =>   // Define stateless component to render input and errors
+  <TextField
+    type={field.type}
+    name={field.name}
+    floatingLabelText={field.floatingLabelText}
+    hintText={field.hintText}
+    errorText={field.meta.touched && field.meta.error || ''}
+  />
+
 @meatierForm({form: 'resetPasswordForm', fields: ['password'], schema: authSchemaPassword})
 export default class ResetPassword extends Component {
   static propTypes = {
@@ -27,12 +36,12 @@ export default class ResetPassword extends Component {
         <form className={styles.resetPasswordForm} onSubmit={handleSubmit(this.onSubmit)}>
           <input style={{display: 'none'}} type="text" name="chromeisabitch"/>
 
-          <TextField
-            {...password}
+          <Field
+            name="password"
             type="password"
+            component={renderInput}
             floatingLabelText="Password"
             hintText="hunter2"
-            errorText={password.touched && password.error || ''}
           />
           <input style={{display: 'none'}} type="text" name="javascriptDisabled"/>
           <div className={styles.resetPasswordButton}>

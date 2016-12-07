@@ -4,11 +4,24 @@ import RaisedButton from 'material-ui/RaisedButton';
 import styles from './Auth.css';
 import {Link} from 'react-router';
 import {loginUser, signupUser, oauthLogin} from '../../ducks/auth';
+import { Field } from 'redux-form'
+
+const renderInput = field =>   // Define stateless component to render input and errors
+  <TextField
+    type={field.type}
+    name={field.name}
+    floatingLabelText={field.floatingLabelText}
+    hintText={field.hintText}
+    errorText={field.meta.touched && field.meta.error || ''}
+  />
+
+const renderLink = field =>
+  <Link to={{pathname: '/login/lost-password', query: {e: field.value}}} className={styles.lostPassword}>
+    Forgot your password?
+  </Link>
 
 export default class Auth extends Component {
   static propTypes = {
-    // fields: PropTypes.arrayOf(PropTypes.string).isRequired,
-    fields: PropTypes.object.isRequired,
     error: PropTypes.any,
     handleSubmit: PropTypes.func,
     submitting: PropTypes.bool,
@@ -32,7 +45,7 @@ export default class Auth extends Component {
   }
 
   render() {
-    const {fields: {email, password}, handleSubmit, isLogin, error, isAuthenticating, authError} = this.props;
+    const {handleSubmit, isLogin, error, isAuthenticating, authError} = this.props;
     const localError = error || authError._error;
     /* eslint-disable react/jsx-handler-names*/
     return (
@@ -42,27 +55,24 @@ export default class Auth extends Component {
         <form className={styles.loginForm} onSubmit={handleSubmit(this.onSubmit)}>
           <input style={{display: 'none'}} type="text" name="chromeisabitch"/>
 
-          <TextField
-            {...email}
-            type="text"
-            hintText="name@email.com"
-            errorText={email.touched && email.error || ''}
+          <Field
+            name="mail"                   // Specify field name
             floatingLabelText="Email"
-          />
+            hintText="name@email.com"
+            component={renderInput}           // Specify render component above
+            type="text"/>
+
           <input style={{display: 'none'}} type="text" name="chromeisabitch"/>
 
-          <TextField
-            {...password}
-            type="password"
+          <Field
+            name="password"                   // Specify field name
             floatingLabelText="Password"
             hintText="hunter2"
-            errorText={password.touched && password.error || ''}
+            component={renderInput}           // Reuse same render component
+            type="password"                // "type" prop passed to renderInput
           />
 
-          {isLogin ?
-            <Link to={{pathname: '/login/lost-password', query: {e: email.value}}} className={styles.lostPassword}>
-              Forgot your password?
-            </Link> : null}
+          {isLogin ? <Field component={renderLink} name="mail"/> : null}
 
           <div className={styles.loginButton}>
             <RaisedButton

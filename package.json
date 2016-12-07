@@ -12,7 +12,7 @@
   "main": "index.js",
   "scripts": {
     "start": "set NODE_ENV=development && node ./src/server/server.babel.js",
-    "prod": "set NODE_ENV=production && node ./src/server/server.babel.js",
+    "prod": "set NODE_ENV=production && node ./src/server/server.babel.js --inspect-workers",
     "build": "rimraf build && concurrently \"npm run build:client\" \"npm run build:server\"",
     "bs": "rimraf build && concurrently \"npm run build:client\" \"npm run build:server\" \"npm run prod\"",
     "quickstart": "rimraf build && concurrently \"npm run build:db\" \"npm run build:client\" \"npm run build:server\" \"npm run prod\"",
@@ -90,8 +90,6 @@
     "immutable": "3.8.1",
     "isomorphic-fetch": "2.2.1",
     "joi": "10.0.5",
-    "jsonwebtoken": "7.2.0",
-    "jwt-decode": "2.1.0",
     "material-ui": "0.16.4",
     "node-env-flag": "0.1.0",
     "node-uuid": "1.4.7",
